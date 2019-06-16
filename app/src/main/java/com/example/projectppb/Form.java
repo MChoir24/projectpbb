@@ -14,16 +14,14 @@ import android.widget.Toast;
 public class Form extends AppCompatActivity {
 
     protected Cursor cursor;
-    DataHelper dbHelper;
     TextView teksatas,teksKat,teksJudul,teksDue;
     private Spinner sp_kategori;
-    private String[] list = {"-Kategori-", "Amerika", "Indonesia", "Malaysia", "India"};
+    private String[] list = {"-Kategori-", "Penting Mendesak", "Penting Tidak Mendesak", "Tidak Penting Mendesak", "Tidak Penting Tidak Mendesak"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        dbHelper = new DataHelper(this);
+        setContentView(R.layout.activity_form);
 
         teksatas = (TextView) findViewById(R.id.txt_tambah_list);
         teksJudul= (TextView) findViewById(R.id.txt_judul);
@@ -50,12 +48,12 @@ public class Form extends AppCompatActivity {
     }
 
     public void buttonPesan(View view) {
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        db.execSQL("insert into note(judul, kategori, due) values('" +
-                teksJudul.getText().toString() + "','" +
-                teksDue.getText().toString() + "','" +
-                sp_kategori.getSelectedItemId() + "')");
-        Toast.makeText(getApplicationContext(), "Data Tersimpan", Toast.LENGTH_SHORT).show();
+        //SQLiteDatabase db = dbHelper.getWritableDatabase();
+        //db.execSQL("insert into note(judul, kategori, due) values('" +
+                //teksJudul.getText().toString() + "','" +
+                //teksDue.getText().toString() + "','" +
+                //sp_kategori.getSelectedItemId() + "')");
+        //Toast.makeText(getApplicationContext(), "Data Tersimpan", Toast.LENGTH_SHORT).show();
         finish();
     }
 }
