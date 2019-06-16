@@ -1,7 +1,9 @@
-package com.example.projectppb;
+package com.example.projectppb.activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.example.projectppb.R;
 
 public class MainActivity extends AppCompatActivity {
 
