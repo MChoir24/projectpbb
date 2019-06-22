@@ -1,6 +1,7 @@
 package com.example.projectppb.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -9,8 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.projectppb.objects.DataHelper;
 import com.example.projectppb.R;
+import com.example.projectppb.activities.ViewTask;
+import com.example.projectppb.objects.DataHelper;
 import com.example.projectppb.objects.Task;
 
 import java.util.ArrayList;
@@ -35,12 +37,14 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
     }
 
     @Override
-    public void onBindViewHolder(@NonNull TaskAdapter.MyViewHolder viewHolder, int i) {
+    public void onBindViewHolder(@NonNull TaskAdapter.MyViewHolder viewHolder, final int i) {
         viewHolder.tv_nama.setText(mDataset.get(i).getNama());
         viewHolder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(mContext, ViewTask.class);
+                intent.putExtra(ViewTask.EXTRA_PERSON, mDataset.get(i));
+                mContext.startActivity(intent);
             }
         });
     }

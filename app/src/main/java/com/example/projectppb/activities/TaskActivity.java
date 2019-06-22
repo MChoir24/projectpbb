@@ -25,10 +25,13 @@ public class TaskActivity extends AppCompatActivity {
     public static ArrayList<Task> tasks;
     protected Cursor cursor;
     DataHelper dbcenter;
+    public static TaskActivity activity;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task);
+
+        activity = this;
 
         dbcenter = new DataHelper(this);
 
@@ -36,7 +39,7 @@ public class TaskActivity extends AppCompatActivity {
         showTask(kategori.getId());
     }
 
-    private void showTask(int idKategori) {
+    public void showTask(int idKategori) {
         SQLiteDatabase db = dbcenter.getReadableDatabase();
         cursor = db.rawQuery("SELECT * FROM kegiatan where id_kategori = "+idKategori,null);
         tasks = new ArrayList<>();

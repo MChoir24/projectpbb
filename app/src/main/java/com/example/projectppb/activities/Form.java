@@ -1,22 +1,34 @@
-package com.example.projectppb;
+package com.example.projectppb.activities;
 
+import android.app.DatePickerDialog;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.projectppb.R;
+import com.example.projectppb.objects.DataHelper;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
+
 public class Form extends AppCompatActivity {
 
     protected Cursor cursor;
+    protected Cursor cursor1;
     TextView teksatas,teksKat,teksJudul,teksDue;
     private Spinner sp_kategori;
+    private DatePickerDialog datePickerDialog;
+    private SimpleDateFormat dateFormatter;
    // private String[] list = {"-Kategori-", "Penting Mendesak", "Penting Tidak Mendesak", "Tidak Penting Mendesak", "Tidak Penting Tidak Mendesak"};
 
     String[] daftar;
@@ -26,6 +38,8 @@ public class Form extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_form);
+
+        dateFormatter = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
 
         dbHelper = new DataHelper(this);
 
@@ -39,9 +53,16 @@ public class Form extends AppCompatActivity {
         }
 
         teksatas = findViewById(R.id.txt_tambah_list);
-        teksJudul= findViewById(R.id.txt_judul);
-        teksDue = findViewById(R.id.txt_due);
+        teksJudul= findViewById(R.id.tambah_judul);
+        teksDue = findViewById(R.id.tambah_due);
         teksKat = findViewById(R.id.txt_spin);
+
+        teksDue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDateDialog();
+            }
+        });
 
 
         sp_kategori = (Spinner) findViewById(R.id.spinner);
@@ -74,6 +95,45 @@ public class Form extends AppCompatActivity {
                 teksDue.getText().toString() + "','" +
                 sp_kategori.getSelectedItemPosition()+1 + "')");
         Toast.makeText(getApplicationContext(), "Data Tersimpan", Toast.LENGTH_SHORT).show();
+        Home.activity.showTask(false);
         finish();
+    }
+    private void showDateDialog(){
+
+        /**
+         * Calendar untuk mendapatkan tanggal sekarang
+         */
+        Calendar newCalendar = Calendar.getInstance();
+
+        /**
+         * Initiate DatePicker dialog
+         */
+        datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+
+                /**
+                 * Method ini dipanggil saat kita selesai memilih tanggal di DatePicker
+                 */
+
+                /**
+                 * Set Calendar untuk menampung tanggal yang dipilih
+                 */
+                Calendar newDate = Calendar.getInstance();
+                newDate.set(year, monthOfYear, dayOfMonth);
+
+                /**
+                 * Update TextView dengan tanggal yang kita pilih
+                 */
+                teksDue.setText(dateFormatter.format(newDate.getTime()));
+            }
+
+        },newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+
+        /**
+         * Tampilkan DatePicker dialog
+         */
+        datePickerDialog.show();
     }
 }

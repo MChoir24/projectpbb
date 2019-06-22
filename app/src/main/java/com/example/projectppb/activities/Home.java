@@ -1,24 +1,24 @@
 package com.example.projectppb.activities;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.Toast;
+import android.view.View;
 
+import com.example.projectppb.R;
+import com.example.projectppb.adapters.KategoriAdapter;
 import com.example.projectppb.adapters.TaskAdapter;
 import com.example.projectppb.objects.DataHelper;
 import com.example.projectppb.objects.Kategori;
-import com.example.projectppb.R;
-import com.example.projectppb.adapters.KategoriAdapter;
 import com.example.projectppb.objects.Task;
 
 import java.util.ArrayList;
@@ -30,8 +30,12 @@ public class Home extends AppCompatActivity {
     private TaskAdapter adapter1;
     private RecyclerView.LayoutManager layoutManager;
 
+    FloatingActionButton fab;
+
     public static ArrayList<Kategori> kategoris;
     public static ArrayList<Task> tasks;
+
+    public static Home activity;
 
     protected Cursor cursor;
     DataHelper dbcenter;
@@ -41,21 +45,35 @@ public class Home extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        activity = this;
+
+        fab = findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                Snackbar.make(view, "Here's a Snackbar", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+                Intent intent =  new Intent(getApplicationContext(), Form.class);
+                startActivity(intent);
+            }
+        });
+
+
         dbcenter = new DataHelper(this);
         showKategori();
 
     }
 
-    private void showTask(boolean sortDate) {
+    public void showTask(boolean sortDate) {
         SQLiteDatabase db = dbcenter.getReadableDatabase();
         if (sortDate){
             cursor = db.query("kegiatan",null,null,null,null,null,"id_kegiatan ASC");
-            Toast.makeText(getApplicationContext(),"true.",Toast.LENGTH_SHORT).show();
+//            Toast.makeText(getApplicationContext(),"true.",Toast.LENGTH_SHORT).show();
             Log.d("mengecek", "showTask: true");
 
         }else {
             cursor = db.rawQuery("SELECT * FROM kegiatan ",null);
-            Toast.makeText(getApplicationContext(),"false.",Toast.LENGTH_SHORT).show();
+//            Toast.makeText(getApplicationContext(),"false.",Toast.LENGTH_SHORT).show();
             Log.d("mengecek", "showTask: false");
         }
 
